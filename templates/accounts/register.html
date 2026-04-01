@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Register | Bozor Pilot AI{% endblock %}
+{% block content %}
+<main class="auth-wrap container">
+    <section class="auth-card glass-card">
+        <span class="eyebrow">Create account</span>
+        <h1>Start with consumer savings or business intelligence</h1>
+        <form method="post" class="form-grid">
+            {% csrf_token %}
+            <p>{{ form.email.label_tag }}{{ form.email }}{{ form.email.errors }}</p>
+            <p>{{ form.username.label_tag }}{{ form.username }}{{ form.username.errors }}</p>
+            <p>{{ form.first_name.label_tag }}{{ form.first_name }}{{ form.first_name.errors }}</p>
+            <p>{{ form.last_name.label_tag }}{{ form.last_name }}{{ form.last_name.errors }}</p>
+            <p>{{ form.role.label_tag }}{{ form.role }}{{ form.role.errors }}</p>
+            <p class="business-only-field" data-role-field="business">
+                {{ form.company_name.label_tag }}{{ form.company_name }}{{ form.company_name.errors }}
+            </p>
+            <p>{{ form.password1.label_tag }}{{ form.password1 }}{{ form.password1.errors }}</p>
+            <p>{{ form.password2.label_tag }}{{ form.password2 }}{{ form.password2.errors }}</p>
+            <button class="button" type="submit">Create account</button>
+        </form>
+    </section>
+</main>
+{% endblock %}
+{% block extra_js %}
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+    const roleSelect = document.getElementById("id_role");
+    const companyField = document.querySelector('[data-role-field="business"]');
+    const companyInput = document.getElementById("id_company_name");
+    if (!roleSelect || !companyField || !companyInput) return;
+
+    function syncRoleFields() {
+        const isBusiness = roleSelect.value === "business";
+        companyField.style.display = isBusiness ? "grid" : "none";
+        companyInput.required = isBusiness;
+    }
+
+    syncRoleFields();
+    roleSelect.addEventListener("change", syncRoleFields);
+});
+</script>
+{% endblock %}

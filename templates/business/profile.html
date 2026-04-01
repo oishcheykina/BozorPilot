@@ -1,0 +1,10 @@
+{% extends "components/dashboard_layout.html" %}
+{% block title %}Settings | Bozor Pilot AI{% endblock %}
+{% block dashboard_content %}
+<section class="glass-card">
+    <h3>Company profile</h3>
+    <p>{{ request.user.company_name|default:"Business demo account" }}</p>
+    <p>{{ request.user.profile.company_type|default:"Retail" }}</p>
+    <p>{{ request.user.profile.location|default:"Tashkent" }}</p>
+</section>
+{% endblock %}

@@ -1,0 +1,29 @@
+{% extends "components/dashboard_layout.html" %}
+{% block title %}Search | Bozor Pilot AI{% endblock %}
+{% block dashboard_content %}
+<section class="glass-card">
+    <form method="get" class="filter-grid">
+        {{ form.as_p }}
+        <button class="button" type="submit">Analyze prices</button>
+    </form>
+</section>
+<section class="results-grid">
+    {% for card in cards %}
+        <article class="result-card glass-card">
+            <img src="{{ card.product.image_url }}" alt="{{ card.product.title }}">
+            <div>
+                <span class="chip">{{ card.summary.label }}</span>
+                <h3>{{ card.product.title }}</h3>
+                <p>{{ card.product.brand }} • {{ card.product.category.name }}</p>
+                <div class="metric-line">Best price: <strong>{{ card.best_price }} UZS</strong></div>
+                {% if card.analytics %}
+                    <div class="metric-line">Market average: <strong>{{ card.analytics.market_average|floatformat:0 }} UZS</strong></div>
+                {% endif %}
+                <a href="{% url 'consumer:product_detail' card.product.slug %}" class="inline-link">View detail</a>
+            </div>
+        </article>
+    {% empty %}
+        <div class="empty-state large">Qidiruv natijalari shu yerda chiqadi. Try “iPhone”, “Samsung”, or “Artel”.</div>
+    {% endfor %}
+</section>
+{% endblock %}

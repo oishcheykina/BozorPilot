@@ -1,0 +1,18 @@
+{% extends "components/dashboard_layout.html" %}
+{% block title %}Insights | Bozor Pilot AI{% endblock %}
+{% block dashboard_content %}
+<section class="insight-grid">
+    {% for item, summary in items %}
+        <article class="glass-card">
+            <span class="chip">{{ summary.competitor_position }}</span>
+            <h3>{{ item.product.title }}</h3>
+            <p>{{ summary.short_term_recommendation }}</p>
+            <div class="metric-line">Recommended: <strong>{{ summary.recommended_price|floatformat:0 }} UZS</strong></div>
+            <div class="metric-line">Action: <strong>{{ summary.suggested_action }}</strong></div>
+            <div class="metric-line">Event impact: <strong>{{ summary.event_impact_score }}</strong></div>
+        </article>
+    {% empty %}
+        <div class="empty-state large">Insights will appear once portfolio products are added.</div>
+    {% endfor %}
+</section>
+{% endblock %}

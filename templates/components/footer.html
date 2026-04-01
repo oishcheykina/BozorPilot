@@ -1,0 +1,18 @@
+<footer class="footer">
+    <div class="container footer-grid">
+        <div>
+            <h4>Bozor Pilot AI</h4>
+            <p>Price transparency platform and business pricing intelligence system for Uzbekistan.</p>
+        </div>
+        <div>
+            <h5>Platform</h5>
+            <a href="{% url 'core:pricing' %}">Plans</a>
+            <a href="{% url 'core:faq' %}">FAQ</a>
+        </div>
+        <div>
+            <h5>Market</h5>
+            <span>{{ marketplace_count }} marketplaces tracked</span>
+            <span>{{ product_count }} products in demo intelligence</span>
+        </div>
+    </div>
+</footer>

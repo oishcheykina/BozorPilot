@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block title %}Import Center | Bozor Pilot AI{% endblock %}
+{% block content %}
+<main class="container page-block">
+    <span class="eyebrow">Admin integrations</span>
+    <h1>Import center</h1>
+    <div class="feature-grid">
+        <article class="glass-card">
+            <h3>Mock/demo mode</h3>
+            <p>Use the seed command to generate realistic benchmark data for investor demos.</p>
+        </article>
+        <article class="glass-card">
+            <h3>Manual admin import</h3>
+            <p>Extend this area with CSV upload endpoints for products, prices, and event signals.</p>
+        </article>
+        <article class="glass-card">
+            <h3>Classifier placeholder</h3>
+            {% for category in categories %}
+                <div class="list-row"><span>{{ category.name }}</span><small>{{ category.external_code }}</small></div>
+            {% endfor %}
+        </article>
+    </div>
+</main>
+{% endblock %}

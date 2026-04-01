@@ -1,0 +1,17 @@
+{% extends "components/dashboard_layout.html" %}
+{% block title %}Favorites | Bozor Pilot AI{% endblock %}
+{% block dashboard_content %}
+<section class="product-grid">
+    {% for item in items %}
+        <article class="product-card glass-card">
+            <img src="{{ item.product.image_url }}" alt="{{ item.product.title }}">
+            <div>
+                <strong>{{ item.product.title }}</strong>
+                <span>{{ item.product.brand }}</span>
+            </div>
+        </article>
+    {% empty %}
+        <div class="empty-state large">No favorites yet. Save products from search results to build your comparison shortlist.</div>
+    {% endfor %}
+</section>
+{% endblock %}

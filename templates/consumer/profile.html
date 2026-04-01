@@ -1,0 +1,10 @@
+{% extends "components/dashboard_layout.html" %}
+{% block title %}Profile | Bozor Pilot AI{% endblock %}
+{% block dashboard_content %}
+<section class="glass-card">
+    <h3>Profile</h3>
+    <p>{{ request.user.get_full_name|default:request.user.email }}</p>
+    <p>Language: {{ request.user.profile.preferred_language|upper }}</p>
+    <p>Location: {{ request.user.profile.location|default:"Tashkent" }}</p>
+</section>
+{% endblock %}

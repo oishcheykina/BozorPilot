@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+{% block content %}
+<main class="dashboard-wrap container">
+    {% include "components/dashboard_sidebar.html" %}
+    <section class="dashboard-main">
+        <div class="dashboard-header">
+            <div>
+                <span class="eyebrow">{{ dashboard_eyebrow }}</span>
+                <h1>{{ dashboard_title }}</h1>
+                <p>{{ dashboard_description }}</p>
+            </div>
+            {% block dashboard_actions %}{% endblock %}
+        </div>
+        {% block dashboard_content %}{% endblock %}
+    </section>
+</main>
+{% endblock %}

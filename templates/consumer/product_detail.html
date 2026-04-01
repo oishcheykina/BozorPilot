@@ -1,0 +1,36 @@
+{% extends "components/dashboard_layout.html" %}
+{% block title %}{{ product.title }} | Bozor Pilot AI{% endblock %}
+{% block dashboard_content %}
+<div class="detail-hero glass-card">
+    <img src="{{ product.image_url }}" alt="{{ product.title }}">
+    <div>
+        <span class="eyebrow">{{ product.category.name }}</span>
+        <h2>{{ product.title }}</h2>
+        <p>{{ product.description }}</p>
+        {% if summary %}
+            <div class="ai-summary-box">
+                <strong>AI Analyzer</strong>
+                <p>{{ summary.explanation }}</p>
+                <div class="metric-line">Best current option: <strong>{{ summary.best_option.marketplace.name }}</strong></div>
+                <div class="metric-line">Savings estimate: <strong>{{ summary.savings_estimate|floatformat:0 }} UZS</strong></div>
+                <a href="{{ summary.best_option.source_url }}" class="button button-sm">Go to partner platform</a>
+            </div>
+        {% endif %}
+    </div>
+</div>
+<div class="dashboard-grid">
+    <section class="glass-card">
+        <h3>Historical price trend</h3>
+        <div class="line-chart" data-chart='{{ chart_data|safe }}'></div>
+    </section>
+    <section class="glass-card">
+        <h3>Comparison list</h3>
+        {% for price in prices %}
+            <div class="list-row">
+                <span>{{ price.marketplace.name }}</span>
+                <small>{{ price.price }} UZS • reliability {{ price.seller_reliability }}</small>
+            </div>
+        {% endfor %}
+    </section>
+</div>
+{% endblock %}

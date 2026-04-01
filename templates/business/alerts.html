@@ -1,0 +1,16 @@
+{% extends "components/dashboard_layout.html" %}
+{% block title %}Alerts | Bozor Pilot AI{% endblock %}
+{% block dashboard_content %}
+<section class="glass-card">
+    <h3>Market alerts</h3>
+    {% for alert in alerts %}
+        <div class="alert-row">
+            <strong>{{ alert.title }}</strong>
+            <span>{{ alert.signal_type }} • impact {{ alert.impact_score }}</span>
+            <p>{{ alert.summary }}</p>
+        </div>
+    {% empty %}
+        <div class="empty-state">No alerts available.</div>
+    {% endfor %}
+</section>
+{% endblock %}

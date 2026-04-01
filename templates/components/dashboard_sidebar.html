@@ -1,0 +1,14 @@
+<aside class="sidebar">
+    <div class="sidebar-brand">
+        <span class="brand-mark">BP</span>
+        <div>
+            <strong>Bozor Pilot AI</strong>
+            <span>Market Intelligence</span>
+        </div>
+    </div>
+    <nav class="sidebar-nav">
+        {% for item in nav_items %}
+            <a href="{{ item.url }}" class="{% if item.active %}active{% endif %}">{{ item.label }}</a>
+        {% endfor %}
+    </nav>
+</aside>

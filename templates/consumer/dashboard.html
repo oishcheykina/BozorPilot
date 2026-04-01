@@ -1,0 +1,45 @@
+{% extends "components/dashboard_layout.html" %}
+{% block title %}Consumer Dashboard | Bozor Pilot AI{% endblock %}
+{% with nav_items=nav_items|default:'' %}
+{% endwith %}
+{% block dashboard_content %}
+<div class="stats-row">
+    <div class="stat-card"><span>Saved items</span><strong>{{ favorites|length }}</strong></div>
+    <div class="stat-card"><span>Recent searches</span><strong>{{ searches|length }}</strong></div>
+    <div class="stat-card"><span>Tracked products</span><strong>{{ featured|length }}</strong></div>
+    <div class="stat-card"><span>Market alerts</span><strong>{{ market_pulse.signals|length }}</strong></div>
+</div>
+<div class="dashboard-grid">
+    <section class="glass-card">
+        <div class="section-head-inline">
+            <h3>Start a product search</h3>
+            <a href="{% url 'consumer:search' %}" class="button button-sm">Open search</a>
+        </div>
+        <p>Search by product, model, brand, or category. Compare listings and see fair-price bands instantly.</p>
+    </section>
+    <section class="glass-card">
+        <h3>Market Pulse</h3>
+        {% for pulse in market_pulse.products %}
+            <div class="list-row"><span>{{ pulse.product }}</span><small>Volatility {{ pulse.volatility }}%</small></div>
+        {% empty %}
+            <div class="empty-state">No pulse data yet.</div>
+        {% endfor %}
+    </section>
+    <section class="glass-card span-2">
+        <h3>Featured comparisons</h3>
+        <div class="product-grid">
+            {% for product in featured %}
+                <a href="{% url 'consumer:product_detail' product.slug %}" class="product-card">
+                    <img src="{{ product.image_url }}" alt="{{ product.title }}">
+                    <div>
+                        <strong>{{ product.title }}</strong>
+                        <span>{{ product.brand }} • {{ product.category.name }}</span>
+                    </div>
+                </a>
+            {% empty %}
+                <div class="empty-state">Seed data to preview featured comparisons.</div>
+            {% endfor %}
+        </div>
+    </section>
+</div>
+{% endblock %}

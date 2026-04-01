@@ -1,0 +1,25 @@
+{% extends "components/dashboard_layout.html" %}
+{% block title %}Analytics | Bozor Pilot AI{% endblock %}
+{% block dashboard_content %}
+<div class="dashboard-grid">
+    <section class="glass-card span-2">
+        <h3>Demand trend and price volatility</h3>
+        <div class="mini-chart large-chart" data-chart='{"labels":["Jan","Feb","Mar","Apr","May","Jun"],"values":[48,54,58,56,61,67]}'></div>
+    </section>
+    <section class="glass-card">
+        <h3>Category dynamics</h3>
+        {% for pulse in market_pulse.products %}
+            <div class="list-row"><span>{{ pulse.product }}</span><small>Volatility {{ pulse.volatility }}%</small></div>
+        {% endfor %}
+    </section>
+    <section class="glass-card span-2">
+        <h3>Market benchmark</h3>
+        {% for item, summary in items %}
+            <div class="table-row">
+                <div><strong>{{ item.product.title }}</strong><span>Current {{ item.selling_price }} UZS</span></div>
+                <div><strong>{{ summary.market_average|floatformat:0 }} UZS</strong><span>{{ summary.risk_notes }}</span></div>
+            </div>
+        {% endfor %}
+    </section>
+</div>
+{% endblock %}

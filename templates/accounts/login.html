@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% block title %}Login | Bozor Pilot AI{% endblock %}
+{% block content %}
+<main class="auth-wrap container">
+    <section class="auth-card glass-card">
+        <span class="eyebrow">Welcome back</span>
+        <h1>Sign in to your market workspace</h1>
+        <form method="post" class="form-grid">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button class="button" type="submit">Login</button>
+        </form>
+        <a href="{% url 'accounts:forgot_password' %}" class="inline-link">Forgot password?</a>
+    </section>
+</main>
+{% endblock %}

@@ -1,0 +1,45 @@
+{% extends "components/dashboard_layout.html" %}
+{% block title %}Business Dashboard | Bozor Pilot AI{% endblock %}
+{% block dashboard_content %}
+<div class="stats-row">
+    <div class="stat-card"><span>Total tracked products</span><strong>{{ kpis.tracked }}</strong></div>
+    <div class="stat-card"><span>Average margin</span><strong>{{ kpis.avg_margin }} UZS</strong></div>
+    <div class="stat-card"><span>Products overpriced</span><strong>{{ kpis.overpriced }}</strong></div>
+    <div class="stat-card"><span>Products underpriced</span><strong>{{ kpis.underpriced }}</strong></div>
+    <div class="stat-card"><span>Fast-moving opportunities</span><strong>{{ kpis.opportunities }}</strong></div>
+    <div class="stat-card"><span>Risk alerts</span><strong>{{ kpis.risks }}</strong></div>
+</div>
+<div class="dashboard-grid">
+    <section class="glass-card span-2">
+        <h3>Portfolio AI Analyzer</h3>
+        <div class="table-list">
+            {% for item, summary in items %}
+                <div class="table-row">
+                    <div>
+                        <strong>{{ item.product.title }}</strong>
+                        <span>{{ summary.competitor_position }} • demand {{ summary.demand_outlook }}</span>
+                    </div>
+                    <div>
+                        <strong>{{ summary.recommended_price|floatformat:0 }} UZS</strong>
+                        <span>{{ summary.short_term_recommendation }}</span>
+                    </div>
+                </div>
+            {% empty %}
+                <div class="empty-state">No business products yet. Add portfolio items to activate the analyzer.</div>
+            {% endfor %}
+        </div>
+    </section>
+    <section class="glass-card">
+        <h3>Market Pulse</h3>
+        {% for pulse in market_pulse.products %}
+            <div class="list-row"><span>{{ pulse.product }}</span><small>{{ pulse.avg_price }} UZS</small></div>
+        {% endfor %}
+    </section>
+    <section class="glass-card">
+        <h3>Alerts feed</h3>
+        {% for alert in alerts %}
+            <div class="alert-row"><strong>{{ alert.title }}</strong><span>{{ alert.summary }}</span></div>
+        {% endfor %}
+    </section>
+</div>
+{% endblock %}

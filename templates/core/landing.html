@@ -1,0 +1,128 @@
+{% extends "base.html" %}
+{% block title %}Bozor Pilot AI | Uzbekistan Price Intelligence{% endblock %}
+{% block body_class %}landing-body{% endblock %}
+{% block content %}
+<main>
+    <section class="hero-section">
+        <div class="container hero-grid">
+            <div>
+                <span class="eyebrow">Fair market benchmark assistant</span>
+                <h1>Bozor Pilot AI — O‘zbekiston bozorida narxlarni tahlil qiluvchi aqlli platforma</h1>
+                <p class="hero-copy">Mahsulot narxlarini solishtiring, bozor oralig‘ini ko‘ring, va AI yordamida ishonchli qaror qabul qiling.</p>
+                <div class="hero-actions">
+                    <a href="{% url 'accounts:register' %}" class="button">Start analyzing</a>
+                    <a href="{% url 'accounts:register' %}" class="button button-ghost">For business</a>
+                    <a href="{% url 'core:pricing' %}" class="button button-soft">See demo</a>
+                </div>
+                <div class="trust-row">
+                    <span>Price transparency platform</span>
+                    <span>Consumer savings assistant</span>
+                    <span>Business pricing intelligence system</span>
+                </div>
+            </div>
+            <div class="hero-panel glass-card">
+                <div class="panel-chip">Market Pulse</div>
+                <div class="kpi-grid">
+                    <div class="kpi-card">
+                        <span>Tracked platforms</span>
+                        <strong>{{ marketplaces|length }}</strong>
+                    </div>
+                    <div class="kpi-card">
+                        <span>Live demo signals</span>
+                        <strong>{{ signal_count }}</strong>
+                    </div>
+                    <div class="kpi-card wide">
+                        <span>Average volatility</span>
+                        <strong>6.8%</strong>
+                        <small>Healthy benchmark range across consumer electronics</small>
+                    </div>
+                </div>
+                <div class="mini-chart" data-chart='{"labels":["Mon","Tue","Wed","Thu","Fri"],"values":[42,51,49,58,61]}'></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="section container">
+        <div class="section-heading">
+            <span class="eyebrow">What is Bozor Pilot AI</span>
+            <h2>Investor-demo ready market intelligence for buyers and sellers</h2>
+        </div>
+        <div class="feature-grid">
+            <article class="glass-card">
+                <h3>How it works</h3>
+                <p>Collects marketplace prices, filters outliers, calculates fair-price bands, and presents AI Analyzer recommendations in a simple economics-oriented UI.</p>
+            </article>
+            <article class="glass-card">
+                <h3>For consumers</h3>
+                <p>Find the best current option, compare marketplaces, save favorites, and see whether a product is выгодно, средняя цена, or дорого.</p>
+            </article>
+            <article class="glass-card">
+                <h3>For businesses</h3>
+                <p>Track margin position, demand signals, price volatility, and event-driven opportunities through a SaaS-style dashboard.</p>
+            </article>
+        </div>
+    </section>
+
+    <section class="section container">
+        <div class="section-heading">
+            <span class="eyebrow">Market insights and visual analytics</span>
+            <h2>Economics-led design with live-looking benchmark cards</h2>
+        </div>
+        <div class="market-grid">
+            <div class="glass-card">
+                <h3>Trending products</h3>
+                {% for item in featured_products %}
+                    <div class="list-row">
+                        <span>{{ item.title }}</span>
+                        <small>{{ item.brand }} • {{ item.category.name }}</small>
+                    </div>
+                {% empty %}
+                    <div class="empty-state">Seed demo data to preview this block.</div>
+                {% endfor %}
+            </div>
+            <div class="glass-card">
+                <h3>Recent alerts</h3>
+                {% for signal in signals %}
+                    <div class="alert-row">
+                        <strong>{{ signal.title }}</strong>
+                        <span>{{ signal.summary }}</span>
+                    </div>
+                {% empty %}
+                    <div class="empty-state">Market alerts will appear after demo import.</div>
+                {% endfor %}
+            </div>
+            <div class="glass-card">
+                <h3>Partner platforms</h3>
+                {% for marketplace in marketplaces %}
+                    <div class="partner-row">
+                        <span>{{ marketplace.name }}</span>
+                        <small>{% if marketplace.is_partner %}Partner{% else %}Watchlist{% endif %}</small>
+                    </div>
+                {% empty %}
+                    <div class="empty-state">No partner platforms yet.</div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+
+    <section class="section container">
+        <div class="pricing-tiles">
+            <article class="price-card">
+                <h3>Free</h3>
+                <strong>0 UZS</strong>
+                <p>Basic comparison, limited searches, basic AI summary.</p>
+            </article>
+            <article class="price-card featured">
+                <h3>Pro Consumer</h3>
+                <strong>149,000 UZS</strong>
+                <p>Advanced filters, full history, richer market alerts.</p>
+            </article>
+            <article class="price-card">
+                <h3>Business</h3>
+                <strong>From 990,000 UZS</strong>
+                <p>Portfolio analytics, AI recommendations, event-driven alerts.</p>
+            </article>
+        </div>
+    </section>
+</main>
+{% endblock %}

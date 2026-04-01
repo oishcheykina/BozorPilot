@@ -1,0 +1,25 @@
+{% extends "components/dashboard_layout.html" %}
+{% block title %}Business Products | Bozor Pilot AI{% endblock %}
+{% block dashboard_content %}
+<div class="dashboard-grid">
+    <section class="glass-card">
+        <h3>Add product to portfolio</h3>
+        <form method="post" class="form-grid">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <button type="submit" class="button">Save product</button>
+        </form>
+    </section>
+    <section class="glass-card">
+        <h3>Tracked products</h3>
+        {% for item in items %}
+            <div class="table-row">
+                <div><strong>{{ item.product.title }}</strong><span>Stock {{ item.stock }}</span></div>
+                <div><strong>{{ item.selling_price }} UZS</strong><span>Buy {{ item.buying_price }} UZS</span></div>
+            </div>
+        {% empty %}
+            <div class="empty-state">Your portfolio is empty. Add products to unlock pricing intelligence.</div>
+        {% endfor %}
+    </section>
+</div>
+{% endblock %}

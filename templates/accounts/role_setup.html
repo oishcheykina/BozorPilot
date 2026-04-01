@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% block title %}Setup | Bozor Pilot AI{% endblock %}
+{% block content %}
+<main class="auth-wrap container">
+    <section class="auth-card glass-card">
+        <span class="eyebrow">Profile setup</span>
+        <h1>Complete your {{ profile.role.name|default:"user" }} onboarding</h1>
+        <form method="post" class="form-grid">
+            {% csrf_token %}
+            <p>{{ form.preferred_language.label_tag }}{{ form.preferred_language }}{{ form.preferred_language.errors }}</p>
+            <p>{{ form.location.label_tag }}{{ form.location }}{{ form.location.errors }}</p>
+            {% if profile.role and profile.role.code == "business" %}
+                <p>
+                    {{ form.company_type.label_tag }}{{ form.company_type }}{{ form.company_type.errors }}
+                </p>
+            {% endif %}
+            <button class="button" type="submit">Continue</button>
+        </form>
+    </section>
+</main>
+{% endblock %}
