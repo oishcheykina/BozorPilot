@@ -1,3 +1,4 @@
+﻿import os
 from pathlib import Path
 
 
@@ -83,3 +84,4 @@ LOGIN_URL = "accounts:login"
 LOGIN_REDIRECT_URL = "core:router"
 LOGOUT_REDIRECT_URL = "core:landing"
 EMAIL_BACKEND = "django.core.mail.backends.console.EmailBackend"
+SHOP_API_BASE_URL = os.getenv("SHOP_API_BASE_URL", "http://127.0.0.1:8001")

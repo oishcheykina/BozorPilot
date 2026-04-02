@@ -1,0 +1,3 @@
+﻿django==6.0.3
+djangorestframework==3.17.1
+django-filter==25.2

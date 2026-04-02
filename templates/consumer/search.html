@@ -1,4 +1,4 @@
-{% extends "components/dashboard_layout.html" %}
+﻿{% extends "components/dashboard_layout.html" %}
 {% block title %}Search | Bozor Pilot AI{% endblock %}
 {% block dashboard_content %}
 <section class="glass-card">
@@ -7,23 +7,52 @@
         <button class="button" type="submit">Analyze prices</button>
     </form>
 </section>
+
+{% if external_error %}
+<section class="glass-card">
+    <div class="empty-state">{{ external_error }}</div>
+</section>
+{% endif %}
+
 <section class="results-grid">
     {% for card in cards %}
-        <article class="result-card glass-card">
-            <img src="{{ card.product.image_url }}" alt="{{ card.product.title }}">
-            <div>
-                <span class="chip">{{ card.summary.label }}</span>
-                <h3>{{ card.product.title }}</h3>
-                <p>{{ card.product.brand }} • {{ card.product.category.name }}</p>
-                <div class="metric-line">Best price: <strong>{{ card.best_price }} UZS</strong></div>
-                {% if card.analytics %}
-                    <div class="metric-line">Market average: <strong>{{ card.analytics.market_average|floatformat:0 }} UZS</strong></div>
-                {% endif %}
-                <a href="{% url 'consumer:product_detail' card.product.slug %}" class="inline-link">View detail</a>
-            </div>
-        </article>
+    <article class="result-card glass-card">
+        {% if card.external %}
+        <img src="{{ card.item.image_url|default:'https://placehold.co/400x400/0f1b2e/f4f7fb?text=Bozor' }}" alt="{{ card.item.title }}">
+        <div>
+            <span class="chip">{{ card.item.label }}</span>
+            <h3>{{ card.item.title }}</h3>
+            <p>{{ card.item.brand }} • {{ card.item.category }}</p>
+            <div class="metric-line">Current price: <strong>{{ card.item.current_price|floatformat:0 }} UZS</strong></div>
+            <div class="metric-line">Market average: <strong>{{ card.item.market_average|floatformat:0 }} UZS</strong></div>
+            <div class="metric-line">Platform: <strong>{{ card.item.platform }}</strong></div>
+            <div class="metric-line">Location: <strong>{{ card.item.location }}</strong></div>
+            {% if card.item.detail_url %}
+            <a href="{{ card.item.detail_url }}" class="inline-link" target="_blank" rel="noopener noreferrer">Open partner product</a>
+            {% endif %}
+        </div>
+        {% else %}
+        <img src="{{ card.product.image_url }}" alt="{{ card.product.title }}">
+        <div>
+            <span class="chip">{{ card.summary.label }}</span>
+            <h3>{{ card.product.title }}</h3>
+            <p>{{ card.product.brand }} • {{ card.product.category.name }}</p>
+            <div class="metric-line">Best price: <strong>{{ card.best_price }} UZS</strong></div>
+            {% if card.analytics %}
+            <div class="metric-line">Market average: <strong>{{ card.analytics.market_average|floatformat:0 }} UZS</strong></div>
+            {% endif %}
+            <a href="{% url 'consumer:product_detail' card.product.slug %}" class="inline-link">View detail</a>
+        </div>
+        {% endif %}
+    </article>
     {% empty %}
-        <div class="empty-state large">Qidiruv natijalari shu yerda chiqadi. Try “iPhone”, “Samsung”, or “Artel”.</div>
+    <div class="empty-state large">
+        {% if using_external_results %}
+        API bo'yicha mahsulot topilmadi. BozorShopPrototype `8001` dagi bazada mahsulot borligini tekshiring.
+        {% else %}
+        Qidiruv natijalari shu yerda chiqadi. Try "Samsung", "iPhone", or "Artel".
+        {% endif %}
+    </div>
     {% endfor %}
 </section>
 {% endblock %}
