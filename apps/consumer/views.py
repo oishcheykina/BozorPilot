@@ -8,11 +8,13 @@ from django.shortcuts import get_object_or_404, redirect, render
 from apps.core.forms import ProductSearchForm
 from apps.core.models import FavoriteProduct, Product, SearchHistory
 from services.analytics_service import AnalyticsService
+from services.ai_product_selection_service import AIProductSelectionService
 from services.market_data_service import MarketDataService
 from services.recommendation_service import RecommendationService
 
 
 analytics_service = AnalyticsService()
+ai_product_selection_service = AIProductSelectionService()
 market_service = MarketDataService()
 recommendation_service = RecommendationService()
 
@@ -39,9 +41,11 @@ def dashboard(request):
 def search(request):
     form = ProductSearchForm(request.GET or None)
     cards = []
+    ai_pick = None
     external_error = None
     q = ""
     has_external_query = False
+    use_ai = request.GET.get("use_ai") == "1"
 
     if form.is_valid():
         q = (form.cleaned_data.get("q") or "").strip()
@@ -67,7 +71,14 @@ def search(request):
             summary = recommendation_service.consumer_summary(product)
             cards.append({"external": False, "product": product, "analytics": analytics, "best_price": best_price, "summary": summary})
 
-    return render(request, "consumer/search.html", {"form": form, "cards": cards, "external_error": external_error, "using_external_results": has_external_query, "nav_items": consumer_nav("search"), "dashboard_eyebrow": "Search intelligence", "dashboard_title": "Find fair prices in seconds", "dashboard_description": "Search and filters on this page are fetched from BozorShopPrototype on localhost:8001."})
+    if use_ai:
+        ai_pick = ai_product_selection_service.pick_best(cards, query=q)
+        if ai_pick and ai_pick.get("best_index") is not None:
+            best_index = ai_pick["best_index"]
+            if 0 <= best_index < len(cards):
+                cards[best_index]["ai_selected"] = True
+
+    return render(request, "consumer/search.html", {"form": form, "cards": cards, "ai_pick": ai_pick, "use_ai": use_ai, "external_error": external_error, "using_external_results": has_external_query, "nav_items": consumer_nav("search"), "dashboard_eyebrow": "Search intelligence", "dashboard_title": "Find fair prices in seconds", "dashboard_description": "Search and filters on this page are fetched from BozorShopPrototype on localhost:8001."})
 
 
 @login_required

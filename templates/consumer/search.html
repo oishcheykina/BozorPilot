@@ -4,7 +4,8 @@
 <section class="glass-card">
     <form method="get" class="filter-grid">
         {{ form.as_p }}
-        <button class="button" type="submit">Analyze prices</button>
+        <button class="button" type="submit">Filtrlar bo'yicha qidirish</button>
+        <button class="button" type="submit" name="use_ai" value="1">AI bilan qidirish</button>
     </form>
 </section>
 
@@ -14,34 +15,57 @@
 </section>
 {% endif %}
 
+{% if ai_pick %}
+<section class="glass-card">
+    <span class="chip">AI tanlovi</span>
+    {% if ai_pick.title %}
+    <h3>{{ ai_pick.title }}</h3>
+    {% endif %}
+    <p>{{ ai_pick.reason }}</p>
+    {% if ai_pick.source == "missing_api_key" %}
+    <p><small>`ANTHROPIC_API_KEY` hali sozlanmagan.</small></p>
+    {% elif ai_pick.source == "ai_error" %}
+    <p><small>Xato tafsiloti: {{ ai_pick.error_detail }}</small></p>
+    {% elif ai_pick.source == "single_result" %}
+    <p><small>Filtrdan keyin faqat bitta mahsulot qoldi.</small></p>
+    {% endif %}
+</section>
+{% endif %}
+
 <section class="results-grid">
     {% for card in cards %}
     <article class="result-card glass-card">
         {% if card.external %}
         <img src="{{ card.item.image_url|default:'https://placehold.co/400x400/0f1b2e/f4f7fb?text=Bozor' }}" alt="{{ card.item.title }}">
         <div>
+            {% if card.ai_selected %}
+            <span class="chip">AI tanlovi</span>
+            {% endif %}
             <span class="chip">{{ card.item.label }}</span>
             <h3>{{ card.item.title }}</h3>
             <p>{{ card.item.brand }} • {{ card.item.category }}</p>
-            <div class="metric-line">Current price: <strong>{{ card.item.current_price|floatformat:0 }} UZS</strong></div>
-            <div class="metric-line">Market average: <strong>{{ card.item.market_average|floatformat:0 }} UZS</strong></div>
-            <div class="metric-line">Platform: <strong>{{ card.item.platform }}</strong></div>
-            <div class="metric-line">Location: <strong>{{ card.item.location }}</strong></div>
+            <div class="metric-line">Joriy narx: <strong>{{ card.item.current_price|floatformat:0 }} UZS</strong></div>
+            <div class="metric-line">Bozor o'rtachasi: <strong>{{ card.item.market_average|floatformat:0 }} UZS</strong></div>
+            <div class="metric-line">Platforma: <strong>{{ card.item.platform }}</strong></div>
+            <div class="metric-line">Joylashuv: <strong>{{ card.item.location }}</strong></div>
             {% if card.item.detail_url %}
-            <a href="{{ card.item.detail_url }}" class="inline-link" target="_blank" rel="noopener noreferrer">Open partner product</a>
+            <a href="{{ card.item.detail_url }}" class="inline-link" target="_blank" rel="noopener noreferrer">Hamkor mahsulotini ochish</a>
             {% endif %}
         </div>
         {% else %}
         <img src="{{ card.product.image_url }}" alt="{{ card.product.title }}">
         <div>
+            {% if card.ai_selected %}
+            <span class="chip">AI tanlovi</span>
+            {% endif %}
             <span class="chip">{{ card.summary.label }}</span>
             <h3>{{ card.product.title }}</h3>
             <p>{{ card.product.brand }} • {{ card.product.category.name }}</p>
-            <div class="metric-line">Best price: <strong>{{ card.best_price }} UZS</strong></div>
+            <div class="metric-line">Eng yaxshi narx: <strong>{{ card.best_price }} UZS</strong></div>
             {% if card.analytics %}
-            <div class="metric-line">Market average: <strong>{{ card.analytics.market_average|floatformat:0 }} UZS</strong></div>
+            <div class="metric-line">Bozor o'rtachasi: <strong>{{ card.analytics.market_average|floatformat:0 }} UZS</strong></div>
             {% endif %}
-            <a href="{% url 'consumer:product_detail' card.product.slug %}" class="inline-link">View detail</a>
+            <a href="{% url 'consumer:product_detail' card.product.slug %}" class="inline-link">Batafsil ko'rish</a>
         </div>
         {% endif %}
     </article>
@@ -50,7 +74,7 @@
         {% if using_external_results %}
         API bo'yicha mahsulot topilmadi. BozorShopPrototype `8001` dagi bazada mahsulot borligini tekshiring.
         {% else %}
-        Qidiruv natijalari shu yerda chiqadi. Try "Samsung", "iPhone", or "Artel".
+        Qidiruv natijalari shu yerda chiqadi. Masalan, "Samsung", "iPhone" yoki "Artel" deb qidiring.
         {% endif %}
     </div>
     {% endfor %}

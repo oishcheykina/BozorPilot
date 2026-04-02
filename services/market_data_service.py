@@ -89,7 +89,9 @@ class MarketDataService:
             normalized.append({
                 "title": item.get("name") or "Unknown product",
                 "brand": item.get("brand_name") or "Unknown",
+                "model": item.get("model_name") or item.get("model") or "",
                 "category": item.get("category_name") or "Marketplace item",
+                "description": item.get("description") or "",
                 "image_url": item.get("image_url") or "",
                 "current_price": price,
                 "original_price": price,
